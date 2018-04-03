@@ -308,7 +308,6 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 
 -(void)userSetPassword:(NSString*)newPassword{
     [self.keychainWrapper mySetObject:newPassword forKey:(__bridge id)(kSecValueData)];
-    [self.keychainWrapper writeToKeychain];
 }
 
 +(void)clearPassword{
