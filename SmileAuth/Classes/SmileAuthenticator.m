@@ -121,6 +121,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kStoryBoardName bundle: bundle];
         
         UINavigationController *naviVC = [storyboard instantiateInitialViewController];
+        naviVC.modalPresentationStyle = UIModalPresentationFullScreen;
         
         [self.rootVC presentViewController:naviVC animated:animated completion:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:SmileTouchID_Presented_AuthVC_Notification object:nil];
