@@ -92,7 +92,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 }
 
 -(void)presentAuthViewControllerAnimated:(BOOL)animated{
-    
+
     if (self.securityType != INPUT_TOUCHID) {
         _isAuthenticated = NO;
     } else {
@@ -101,28 +101,28 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
             _isAuthenticated = (intervalSincePreviousAuthenticated < self.timeoutInterval);
         }
     }
-    
+
     if (!_isAuthenticated) {
-        
+
         //dimiss all presentedViewController, for example, if user is editing password
         if (self.rootVC.presentedViewController) {
             self.previousPresentedVC = self.rootVC.presentedViewController;
             [self.rootVC.presentedViewController dismissViewControllerAnimated:NO completion:nil];
         }
-        
+
         if ([self.delegate respondsToSelector:@selector(AuthViewControllerPresented)]) {
             [self.delegate AuthViewControllerPresented];
         }
-        
+
         self.isShowingAuthVC = YES;
-        
+
         NSBundle *bundle = [NSBundle bundleForClass: self.class];
-        
+
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kStoryBoardName bundle: bundle];
-        
+
         UINavigationController *naviVC = [storyboard instantiateInitialViewController];
         naviVC.modalPresentationStyle = UIModalPresentationFullScreen;
-        
+
         [self.rootVC presentViewController:naviVC animated:animated completion:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:SmileTouchID_Presented_AuthVC_Notification object:nil];
         }];
@@ -145,7 +145,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 
 -(void)configureNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
@@ -156,7 +156,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
     }
 }
 
--(void)appWillEnterForeground:(NSNotification*)notification{  
+-(void)appWillEnterForeground:(NSNotification*)notification{
     if (_didReturnFromBackground && !self.isShowingAuthVC) {
         if ([SmileAuthenticator hasPassword]) {
             //show login vc
@@ -174,7 +174,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
     });
-    
+
     return sharedInstance;
 }
 
@@ -189,7 +189,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
         self.parallaxMode = YES;
         self.passcodeDigit = kPasswordLength;
         self.timeoutInterval = 0;
-        
+
         [self configureNotification];
     }
     return self;
@@ -209,11 +209,11 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 }
 
 -(void)authenticateWithSuccess:(AuthCompletionBlock)authSuccessBlock andFailure:(AuthErrorBlock)failureBlock{
-    
+
     NSError *authError = nil;
-    
+
     self.context = [[LAContext alloc] init];
-    
+
     if ([SmileAuthenticator canAuthenticateWithError:&authError]) {
         [self.context evaluatePolicy:self.policy localizedReason:self.localizedReason reply:^(BOOL success, NSError *error) {
             if (success) {
@@ -221,62 +221,62 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
                     authSuccessBlock();
                 });
             }
-            
+
             else {
                 switch (error.code) {
                     case LAErrorAuthenticationFailed:
-                        
+
                         NSLog(@"LAErrorAuthenticationFailed");
-                        
+
                         break;
-                        
+
                     case LAErrorUserCancel:
-                        
+
                         NSLog(@"LAErrorUserCancel");
-                        
+
                         break;
-                        
+
                     case LAErrorUserFallback:
-                        
+
                         NSLog(@"LAErrorUserFallback");
-                        
+
                         break;
-                        
+
                     case LAErrorSystemCancel:
-                        
+
                         NSLog(@"LAErrorSystemCancel");
-                        
+
                         break;
-                        
+
                     case LAErrorPasscodeNotSet:
-                        
+
                         NSLog(@"LAErrorPasscodeNotSet");
-                        
+
                         break;
-                        
-                    case LAErrorTouchIDNotAvailable:
-                        
+
+                    case LAErrorBiometryNotAvailable:
+
                         NSLog(@"LAErrorTouchIDNotAvailable");
-                        
+
                         break;
-                        
-                    case LAErrorTouchIDNotEnrolled:
-                        
+
+                    case LAErrorBiometryNotEnrolled:
+
                         NSLog(@"LAErrorTouchIDNotEnrolled");
-                        
+
                         break;
-                        
+
                     default:
                         break;
                 }
-                
+
                 SmileTouchID_DispatchMainThread(^(){
                     failureBlock((LAError) error.code);
                 });
             }
         }];
     }
-    
+
     else {
         failureBlock((LAError) authError.code);
     }
@@ -285,11 +285,11 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 #pragma mark - Utility
 
 +(BOOL)hasPassword {
-    
+
     if ([(NSString*)[[SmileAuthenticator sharedInstance].keychainWrapper myObjectForKey:(__bridge id)(kSecValueData)] length] > 0) {
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -303,7 +303,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
     if ([userInput isEqualToString:[[SmileAuthenticator sharedInstance].keychainWrapper myObjectForKey:(__bridge id)(kSecValueData)]]) {
         return YES;
     }
-    
+
     return NO;
 }
 
