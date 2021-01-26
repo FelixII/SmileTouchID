@@ -199,12 +199,7 @@
     }
     
     //hide bar button
-    if ([SmileAuthenticator sharedInstance].securityType == INPUT_TOUCHID) {
-        if (self.navigationItem.rightBarButtonItem) {
-            [self.navigationItem.rightBarButtonItem setTintColor:[UIColor clearColor]];
-            [self.navigationItem.rightBarButtonItem setEnabled:NO];
-        }
-        
+    if ([SmileAuthenticator sharedInstance].securityType == INPUT_TOUCHID) {      
         //begin check canAuthenticate
         NSError *error = nil;
         if ([SmileAuthenticator canAuthenticateWithError:&error]) {
