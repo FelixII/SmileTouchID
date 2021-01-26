@@ -199,7 +199,7 @@
     }
     
     //hide bar button
-    if ([SmileAuthenticator sharedInstance].securityType == INPUT_TOUCHID) {      
+    if ([SmileAuthenticator sharedInstance].securityType == INPUT_TOUCHID) {
         //begin check canAuthenticate
         NSError *error = nil;
         if ([SmileAuthenticator canAuthenticateWithError:&error]) {
