@@ -61,6 +61,7 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 #pragma mark - for Delegate
 
 -(void)touchID_OR_PasswordAuthSuccess{
+    _isAuthenticated = true;
     self.previousAuthenticatedDate = [NSDate date];
     if ([self.delegate respondsToSelector:@selector(userSuccessAuthentication)]) {
         [self.delegate userSuccessAuthentication];
@@ -137,7 +138,6 @@ static NSString *kStoryBoardName = @"SmileSettingVC";
 }
 
 -(void)authViewControllerWillDismissed{
-    _isAuthenticated = true;
     self.isShowingAuthVC = NO;
 }
 
