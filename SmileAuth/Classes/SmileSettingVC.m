@@ -198,8 +198,15 @@
             break;
     }
     
-    //hide bar button
     if ([SmileAuthenticator sharedInstance].securityType == INPUT_TOUCHID) {
+        if ([SmileAuthenticator sharedInstance].showCancelButton == false) {
+            //hide bar button
+            if (self.navigationItem.rightBarButtonItem) {
+                [self.navigationItem.rightBarButtonItem setTintColor:[UIColor clearColor]];
+                [self.navigationItem.rightBarButtonItem setEnabled:NO];
+            }
+        }
+
         //begin check canAuthenticate
         NSError *error = nil;
         if ([SmileAuthenticator canAuthenticateWithError:&error]) {
