@@ -59,6 +59,8 @@ typedef NS_ENUM(int, SecurityType) {
 @property (nonatomic, strong) NSString *appLogoName;
 /*!@brief <b>For customization</b>, use this property to set the backgroundImage.*/
 @property (nonatomic, strong) UIImage *backgroundImage;
+/*!@brief Show a 'Cancel' button in the navigation bar.*/
+@property (nonatomic) BOOL showCancelButton;
 /*!@brief <b>For customization</b>, use this property to change passcode digit. The default digit is 4.*/
 @property (nonatomic) NSInteger passcodeDigit;
 /*!@brief <b>For customization</b>, if set it to Yes, change UINavigationBar to transparent, the default value is No.*/
